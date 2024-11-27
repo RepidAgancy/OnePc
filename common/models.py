@@ -2,7 +2,7 @@ import uuid
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from django.core.validators import RegexValidator
 
 class BaseModel(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
@@ -13,7 +13,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Adversitement(models.Model):
+class Adversitement(BaseModel):
     image = models.ImageField(upload_to='common/advertisement')
     link = models.URLField()
 
@@ -26,7 +26,14 @@ class Adversitement(models.Model):
 
 class ContactUs(BaseModel):
     name = models.CharField(max_length=120)
-    phone_number = models.CharField(max_length=120)
+    phone_number = models.CharField(
+        max_length=120,
+        validators=[
+            RegexValidator(
+                regex=r'^\+?[1-9]\d{1,14}$',
+                message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed."
+            )
+        ])
     is_contacted = models.BooleanField(default=False)
 
     def __str__(self) -> str:

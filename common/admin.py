@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from common.models import AboutUs, ContactUs, Adversitement
+
+admin.site.register(AboutUs)
+admin.site.register(ContactUs)
+admin.site.register(Adversitement)
