@@ -96,7 +96,7 @@ class InfoNameByCategoryAPIView(generics.GenericAPIView):
                     info_text_count=Count('info_text', distinct=True),  # Count distinct info_text
                     info_text_list=ArrayAgg('info_text', distinct=True),  # Collect all unique info_text
                 )
-                .filter(info_text_count__gt=2)  # Include only info_name with more than 2 distinct info_text
+                .filter(info_text_count__gt=2)  
             )
 
             result = [
