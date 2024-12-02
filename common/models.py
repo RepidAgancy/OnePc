@@ -34,6 +34,7 @@ class Adversitement(BaseModel):
     class Meta:
         verbose_name = _('Adverstisement')
         verbose_name_plural = _('Advertisements')
+        
 
 class ContactUs(BaseModel):
     name = models.CharField(max_length=120)

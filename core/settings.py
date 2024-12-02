@@ -182,10 +182,9 @@ JAZZMIN_SETTINGS = {
 LANGUAGES = (
     ('en', 'English'),
     ('uz', 'Uzbek'),
-    ('ru', 'Russia'),
-    ('уз', 'Krill')
+    ('ru', 'Russian'),
 )
-DEFAULT_MODELTRANSLATION_LANGUAGE = 'en'
+DEFAULT_MODELTRANSLATION_LANGUAGE = 'uz'
 
 
 SWAGGER_SETTINGS = {

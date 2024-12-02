@@ -7,7 +7,7 @@ class AboutUsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AboutUs
         fields = (
-            'uuid', 'title', 'description', 'video'
+            'uuid', 'title_uz', 'title_ru', 'title_en', 'description_uz', 'description_ru', 'description_en', 'video'
         )
 
 
@@ -23,7 +23,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     class Meta:
         model = DiscountAdvertisement
         fields = (
-            'uuid', 'image', 
+            'uuid', 'image_uz', 'image_en', 'image_ru', 
         )
 
 
