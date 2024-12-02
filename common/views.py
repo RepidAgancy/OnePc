@@ -19,7 +19,7 @@ class AdvertisementApiView(generics.ListAPIView):
 
 class DiscountAdvertisementApiView(generics.ListAPIView):
     permission_classes = (permissions.AllowAny, )
-    serializer_class = serializers.AdvertisementSerializer
+    serializer_class = serializers.DiscountAdvertisementementSerializer
     queryset = models.DiscountAdvertisement.objects.all()
 
 

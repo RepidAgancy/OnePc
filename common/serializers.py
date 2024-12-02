@@ -15,15 +15,15 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Adversitement
         fields = (
-            'uuid', 'image', 'link'
+            'uuid', 'image_uz', 'image_ru', 'image_en', 'link'
         )
 
 
-class AdvertisementSerializer(serializers.ModelSerializer):
+class DiscountAdvertisementementSerializer(serializers.ModelSerializer):
     class Meta:
         model = DiscountAdvertisement
         fields = (
-            'uuid', 'image_uz', 'image_en', 'image_ru', 
+            'uuid', 'image', 
         )
 
 
