@@ -17,6 +17,12 @@ class AdvertisementApiView(generics.ListAPIView):
     queryset = models.Adversitement.objects.all()
 
 
+class DiscountAdvertisementApiView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny, )
+    serializer_class = serializers.AdvertisementSerializer
+    queryset = models.DiscountAdvertisement.objects.all()
+
+
 class ContactUsApiView(generics.GenericAPIView):
     permission_classes = (permissions.AllowAny, )
     serializer_class = serializers.ContactUsSerializer

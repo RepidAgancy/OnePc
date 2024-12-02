@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from common.models import AboutUs, Adversitement, ContactUs
+from common.models import AboutUs, Adversitement, ContactUs, DiscountAdvertisement
 
 
 class AboutUsSerializer(serializers.ModelSerializer):
@@ -16,6 +16,14 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         model = Adversitement
         fields = (
             'uuid', 'image', 'link'
+        )
+
+
+class AdvertisementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiscountAdvertisement
+        fields = (
+            'uuid', 'image', 
         )
 
 

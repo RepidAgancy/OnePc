@@ -1,7 +1,7 @@
 from django.db.models import Q, Count
 from django.contrib.postgres.aggregates import ArrayAgg
 
-from rest_framework import generics, permissions, response, status
+from rest_framework import generics, permissions, response, status, views
 import django_filters.rest_framework
 
 from product import models, serializers, filters
@@ -48,6 +48,12 @@ class ProductCategoryListApiView(generics.ListAPIView):
     queryset = models.CategoryProduct.objects.all()
 
 
+class ProductCategoryIscommonListApiView(generics.ListAPIView):
+    permission_classes = (permissions.AllowAny, )
+    serializer_class = serializers.CategoryListSerializer
+    queryset = models.CategoryProduct.objects.filter(is_common=True)
+
+
 class ProductBrandListApiView(generics.ListAPIView):
     permission_classes = (permissions.AllowAny, )
     serializer_class = serializers.BrandListSerializer
@@ -84,7 +90,7 @@ class ProductByCategoryApiView(generics.ListAPIView):
         return queryset
     
 
-class InfoNameByCategoryAPIView(generics.GenericAPIView):
+class InfoNameByCategoryAPIView(views.APIView):
     def get(self, request, uuid):
         try:
             category = models.CategoryProduct.objects.get(uuid=uuid)
@@ -111,5 +117,46 @@ class InfoNameByCategoryAPIView(generics.GenericAPIView):
             return response.Response({"valid_info": result}, status=200)
         except models.CategoryProduct.DoesNotExist:
             return response.Response({"error": "Category not found"}, status=404)
+        
 
+class OrderCreateApiView(generics.GenericAPIView):
+    permission_classes = (permissions.AllowAny, )
+    serializer_class = serializers.OrderCreateSerializer
+
+    def post(self, request, *args, **kwargs):
+        product_list_ids = request.data.get('product_list_ids', [])
+        qauntity_list = request.data.get('quantity_list', [])
+
+        if not product_list_ids or not qauntity_list:
+            return response.Response({"message":"Products must be given and order quantity must be"}, status=status.HTTP_400_BAD_REQUEST)
+        if len(product_list_ids) != len(qauntity_list): 
+            return response.Response({"message":"Lengths must be equal with product and quantity"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            delivery_form = serializer.save()  # Save the delivery form
+
+            for product_id, quantity in zip(product_list_ids, qauntity_list):
+                try:
+                    product = models.Product.objects.get(id=product_id)
+                except models.Product.DoesNotExist:
+                    return response.Response({"error": f"Product with ID {product_id} does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+                # Create the OrderProduct entry
+                models.OrderProduct.objects.create(
+                    delivery_form=delivery_form,
+                    product=product,
+                    quantity=quantity
+                )
+
+            return response.Response(
+                {
+                    "message": "Order created successfully",
+                    "delivery_form": serializer.data
+                },
+                status=status.HTTP_201_CREATED
+            )
+        
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+      
 

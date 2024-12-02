@@ -13,6 +13,17 @@ class BaseModel(models.Model):
         abstract = True
 
 
+class DiscountAdvertisement(BaseModel):
+    image = models.ImageField(upload_to='common/discount-advertisement/')
+
+    def __str__(self):
+        return f"{self.image} discount"
+
+    class Meta:
+        verbose_name = _('Discount Adverstisement')
+        verbose_name_plural = _('Discount Advertisements')
+
+
 class Adversitement(BaseModel):
     image = models.ImageField(upload_to='common/advertisement')
     link = models.URLField()
@@ -21,8 +32,8 @@ class Adversitement(BaseModel):
         return self.image.name
     
     class Meta:
-        verbose_name = 'Adverstisement'
-        verbose_name_plural = 'Advertisements'
+        verbose_name = _('Adverstisement')
+        verbose_name_plural = _('Advertisements')
 
 class ContactUs(BaseModel):
     name = models.CharField(max_length=120)

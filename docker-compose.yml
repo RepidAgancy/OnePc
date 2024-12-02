@@ -1,32 +1,25 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:13
+  web:
+    build: .
+    container_name: e_commerce_web
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=True
+  
+  db:
+    image: postgres:14
+    container_name: e_commerce_db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin123
       POSTGRES_DB: onepc
-    networks:
-      - backend
-
-  web:
-    build: .
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-    volumes:
-      - .:/app
     ports:
-      - "8001:8001"
-    depends_on:
-      - db
-    networks:
-      - backend
-
-volumes:
-  postgres_data:
-
-networks:
-  backend:
-    driver: bridge
+      - "5432:5432"

@@ -96,3 +96,25 @@ class BrandListSerializer(serializers.ModelSerializer):
         )
 
 
+class OrderCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Delivery_Form
+        fields = (
+            'uuid', 'first_name', 'last_name', 'pickup_type', 'region', 'city', 'pickup_address', 'phone_number'
+        )
+
+
+    def create(self, validated_data):
+        order = models.Delivery_Form.objects.create(
+            first_name = validated_data['first_name'],
+            last_name = validated_data['last_name'],
+            pickup_type = validated_data['pickup_type'],
+            region = validated_data['region'],
+            city = validated_data['city'],
+            pickup_address = validated_data['pickup_address'],
+            phone_number = validated_data['phone_number'],
+        )
+
+        return {
+            'message':"Order created successfullyr"
+        }
